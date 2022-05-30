@@ -31,6 +31,50 @@ __Технические моменты__
 в другом инструменте.
 - Это мой первый опыт работы с Yii2)
 
+__Запуск__
+
+В папке appache2/sites-available создаем файл:
+
+    geoip_ms.loc.conf
+
+    <VirtualHost *:80>
+    ServerName geoip_ms.loc
+    DocumentRoot /__your_path_here__/geoip_ms/web
+    <Directory /__your_path_here__/geoip_ms/web>
+
+    RewriteEngine on
+
+    # Если запрашиваемая в URL директория или файл существуют обращаемся к ним напрямую
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Если нет - перенаправляем запрос на index.php
+    RewriteRule . index.php
+
+        Options Indexes MultiViews FollowSymLinks
+	AllowOverride All
+	Require local
+	#Order allow,deny
+	#Allow from all
+    </Directory>
+</VirtualHost>
+
+Добавляем в файл
+
+    \etc\hosts
+
+    строку localhost geoip_ms.loc
+
+Создаем конфиг файл в папке appache2/sites-enabled командой
+
+    a2ensite geoip_ms.loc
+
+Перезапускаем apache2
+
+После этого, микросервис доступен по http://geoip_ms.loc
+Без настройки виртуального хоста доступ возможен через
+http://localhost/geoip_ms/web/
+
+
 Released: 27/05/2022 - 31/05/2022
 License: GPL
 
